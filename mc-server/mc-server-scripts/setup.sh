@@ -18,7 +18,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 echo "installing mcstatus"
 sudo yum install -y python-pip
-pip install --user --upgrade pip mcstatus
+# TODO this is not security friendly but cronjob doens't pick up libraries
+# installed with pip install --user <lib>
+sudo pip install --upgrade pip mcstatus
 
 echo "starting cron"
 sudo systemctl enable --now crond

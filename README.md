@@ -23,6 +23,7 @@ Luke and Mateo's Minecraft Server. To deploy yourself just follow all the instru
 
 1. set the variables in `./mc-server/terraform.tfvars`. Descriptions of these variables can be found in `./mc-server/variables.tf`
 2. Run `./deploy.sh`
+3. Endpoint is printed out or can be found by running `sls info` from within the `mc-lambda` directory.
 
 ## Server Shutdown  
 **WARNING THIS LOSES DATA**

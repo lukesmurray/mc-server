@@ -7,4 +7,4 @@ echo "destroying server"
 terraform destroy --auto-approve mc-server
 
 echo "destroying lambda"
-./mc-lambda/destroy_serverless.sh
+./mc-lambda/scripts/destroy_serverless.sh
