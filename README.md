@@ -2,6 +2,8 @@
 
 Luke and Mateo's Minecraft Server. To deploy yourself just follow all the instructions below *carefully*.
 
+# Server Setup
+
 ## Aws Setup
 
 1. Create a [**Key Pair**](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair).
@@ -10,20 +12,21 @@ Luke and Mateo's Minecraft Server. To deploy yourself just follow all the instru
 
 1. [Install terraform](https://learn.hashicorp.com/terraform/getting-started/install.html)
 2. [Install aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
-3. Run `aws configure`. Follow instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+3. [Install serverless](https://serverless.com/framework/docs/getting-started/)
+4. Run `aws configure`. Follow instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
    1. Set your access keys and region, default output format can be json.
-4. Run `terraform init` to initialize local settings
-5. Import the key pair from aws. `terraform import aws_key_pair.mc_auto_key_pair key` where key is the name of the key you downloaded in aws set up.
+5. Run `terraform init` to initialize local settings
+6. Import the key pair from aws. `terraform import aws_key_pair.mc_auto_key_pair key` where key is the name of the key you downloaded in aws set up.
    1. You can see possible key names using `aws ec2 describe-key-pairs | jq '.KeyPairs[].KeyName'`
 
 ## Server Deploy
 
-1. set the variables in `terraform.tfvars`. Descriptions of these variables can be found in `variables.tf`
-2. Run `terraform apply`
+1. set the variables in `./mc-server/terraform.tfvars`. Descriptions of these variables can be found in `./mc-server/variables.tf`
+2. Run `./deploy.sh`
 
 ## Server Shutdown  
 **WARNING THIS LOSES DATA**
-1. Run `terraform destroy`
+1. Run `./destroy.sh`
 
 ## Useful Terraform Commands 
 

@@ -1,0 +1,52 @@
+{% extends "layout.html" %} 
+{% block body %} 
+
+    {# display the status of the server #}
+    {% if status %}
+        <h1>Instance Status</h1>
+        {% if status == "pending" %}
+            <p>Server is starting. It may take a couple of minutes.</p>
+        {% elif status == "running" %}
+            <p>Server is running.</p>
+        {% elif status == "shutting-down" %}
+            <p>Server is preparing to be taken down permanently.</p>
+        {% elif status == "terminated" %}
+            <p>Server has been taken down permanently. Run deploy to put it back up.</p>
+        {% elif status == "stopping" %}
+            <p>Server is preparing to shutdown. Check back in a minute or two to start it up.</p>
+        {% elif status == "stopped" %}
+            <p>Server has been stopped.</p>
+        {% endif %}
+    {% endif %}
+
+    {# display the ip adress of the server #}
+    {% if ip %}
+        <h1>IP Address</h1>
+        <p>{{ ip }}</p>
+    {% endif %}
+
+    <h1>Action</h1>
+
+    {# start action #}
+    {% if status == "stopped" %}
+        <form action="start" method="POST">
+            <input type="submit" name="start server" value="start server" />
+        </form>
+        <br/>
+    {% endif %}
+
+    {# stop action #}
+    {% if status == "running" %}
+        <form action="stop" method="POST">
+            <input type="submit" name="stop server" value="stop server" />
+        </form>
+        <br/>
+    {% endif %}
+
+    {# logout action #}
+    <form action="logout" method="POST">
+        <input type="submit" name="logout" value="logout" />
+    </form>
+
+
+{% endblock %}

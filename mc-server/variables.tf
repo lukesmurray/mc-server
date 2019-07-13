@@ -1,7 +1,6 @@
 # Defines all variables and their descriptions for mc server on aws.
 
 variable "region" {
-  default     = "us-west-1"
   description = "aws region"
 }
 

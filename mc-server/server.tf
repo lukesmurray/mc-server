@@ -130,7 +130,7 @@ resource "aws_instance" "mc_auto_instance" {
 
   # copy script files to the server
   provisioner "file" {
-    source      = "./mc-server-scripts/"
+    source      = "${path.module}/mc-server-scripts/"
     destination = "/app"
   }
 

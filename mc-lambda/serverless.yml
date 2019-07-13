@@ -1,0 +1,41 @@
+service: mc-auto-lambda
+
+provider:
+  name: aws
+  runtime: python3.7
+  # get the region from the config
+  region: ${file(config.json):region}
+  memorySize: 128
+  # allow access for ec2
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - ec2:StartInstances
+        - ec2:StopInstances
+      Resource: ${file(config.json):instance_arn}
+    - Effect: "Allow"
+      Action:
+        - ec2:DescribeInstances
+        - ec2:DescribeInstanceStatus
+      Resource: "*"
+  environment:
+    MC_SERVER_INSTANCE_ID: ${file(config.json):instance_id}
+
+# plugins for flask and python requirements
+plugins:
+  - serverless-wsgi
+  - serverless-python-requirements
+
+# set wsgi info
+custom:
+  wsgi:
+    app: app.app
+    packRequirements: false
+
+# the lambda function
+functions:
+  app:
+    handler: wsgi_handler.handler
+    events:
+      - http: ANY /
+      - http: "ANY {proxy+}"
