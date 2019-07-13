@@ -39,3 +39,6 @@ node_modules
 
 # ignore serverless state
 .serverless
+
+# ignore generated config
+mc-lambda/config.json

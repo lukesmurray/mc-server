@@ -25,8 +25,6 @@ provider:
 plugins:
   - serverless-wsgi
   - serverless-python-requirements
-
-# set wsgi info
 custom:
   wsgi:
     app: app.app

@@ -29,7 +29,7 @@
 
     {# start action #}
     {% if status == "stopped" %}
-        <form action="start" method="POST">
+        <form action="{{ url_for('start') }}" method="POST">
             <input type="submit" name="start server" value="start server" />
         </form>
         <br/>
@@ -37,14 +37,14 @@
 
     {# stop action #}
     {% if status == "running" %}
-        <form action="stop" method="POST">
+        <form action="{{ url_for('stop') }}" method="POST">
             <input type="submit" name="stop server" value="stop server" />
         </form>
         <br/>
     {% endif %}
 
     {# logout action #}
-    <form action="logout" method="POST">
+    <form action="{{ url_for('logout') }}" method="POST">
         <input type="submit" name="logout" value="logout" />
     </form>
 
