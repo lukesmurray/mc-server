@@ -6,6 +6,8 @@ set -ex
 
 cd /app
 
+/app/autoload.sh
+
 echo "starting the cron jobs"
 sudo crontab crontab
 

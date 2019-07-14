@@ -3,8 +3,9 @@
 
 set -ex
 
+echo "destroying lambda"
+./mc-lambda/scripts/destroy_serverless.sh
+
 echo "destroying server"
 terraform destroy --auto-approve mc-server
 
-echo "destroying lambda"
-./mc-lambda/scripts/destroy_serverless.sh

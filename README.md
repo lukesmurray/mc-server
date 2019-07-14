@@ -25,9 +25,15 @@ Luke and Mateo's Minecraft Server. To deploy yourself just follow all the instru
 2. Run `./deploy.sh`
 3. Endpoint is printed out or can be found by running `sls info` from within the `mc-lambda` directory.
 
-## Server Shutdown  
-**WARNING THIS LOSES DATA**
+## Server Shutdown (Safe Mode Data Preserved)
+This will destroy any compute instances but keep back ups of your world in the bucket specified by bucket name. You may be charged for these. You will see an error, bucket not empty but all other resources will have been destroyed.
+
 1. Run `./destroy.sh`
+
+## Server Shutdown (DANGER MODE)
+This will destroy compute instances and the bucket.
+1. Go into `server.tf` and change `force_destroy` in `mc_auto_bucket` to `true`.
+2. Run `./destroy.sh`
 
 ## Useful Terraform Commands 
 

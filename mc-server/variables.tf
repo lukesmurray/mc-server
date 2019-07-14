@@ -23,4 +23,8 @@ variable "aws_key_name" {
   description = "The name of the key from aws setup. Obtain using > aws ec2 describe-key-pairs | jq '.KeyPairs[].KeyName'"
 }
 
+variable "bucket_name" {
+  description = "The name of the s3 bucket to store data in, including world backups"
+}
+
 

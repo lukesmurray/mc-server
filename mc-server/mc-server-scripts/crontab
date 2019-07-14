@@ -1,1 +1,2 @@
 */5 * * * * /app/autoshutdown.sh  > /app/cron_out.log 2> /app/cron_error.log
+*/5 * * * * /app/autobackup.sh  > /app/cron_out.log 2> /app/cron_error.log

@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+set -ex
 
 # function to determine the number of players
 number_of_players() {

@@ -14,6 +14,41 @@ provider "aws" {
   region  = var.region
 }
 
+# create an S3 bucket to store data in 
+resource "aws_s3_bucket" "mc_auto_bucket" {
+  bucket = var.bucket_name
+
+  region = var.region
+
+  force_destroy = false # change to True to destroy all data
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    enabled = true
+
+    noncurrent_version_transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+
+    noncurrent_version_transition {
+      days          = 60
+      storage_class = "GLACIER"
+    }
+
+    noncurrent_version_expiration {
+      days = 90
+    }
+  }
+
+  tags = {
+    project = var.project_tag
+  }
+}
+
 # resource group controls server ports
 resource "aws_security_group" "mc_auto_security_group" {
   name        = "mc_auto_security_group"
@@ -70,6 +105,60 @@ resource "aws_security_group" "mc_auto_security_group" {
   }
 }
 
+# iam role for ec2 to access s3
+resource "aws_iam_role" "ec2_s3_access_role" {
+  name = "ec2_s3_access_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+
+  # set the tags
+  tags = {
+    project = var.project_tag
+  }
+}
+
+# container for iam role so ec2 can access s3
+resource "aws_iam_instance_profile" "ec2_s3_access_profile" {
+  name = "ec2_s3_acess_profile"
+  role = "${aws_iam_role.ec2_s3_access_role.name}"
+}
+
+resource "aws_iam_role_policy" "ec2_s3_access_policy" {
+  name = "ec2_s3_access_policy"
+  role = "${aws_iam_role.ec2_s3_access_role.id}"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": "s3:*",
+          "Resource": [
+              "arn:aws:s3:::*/*",
+              "arn:aws:s3:*:*:job/*",
+              "arn:aws:s3:::${var.bucket_name}"
+          ]
+        }
+    ]
+}
+EOF
+}
+
+
 # key for ssh access
 resource "aws_key_pair" "mc_auto_key_pair" {
   key_name   = var.aws_key_name
@@ -95,10 +184,11 @@ data "aws_ami" "amazon-linux-2" {
 
 # create the instance
 resource "aws_instance" "mc_auto_instance" {
-  ami             = "${data.aws_ami.amazon-linux-2.id}"
-  instance_type   = var.instance_type
-  key_name        = "${aws_key_pair.mc_auto_key_pair.key_name}"
-  security_groups = ["${aws_security_group.mc_auto_security_group.name}"]
+  ami                  = "${data.aws_ami.amazon-linux-2.id}"
+  instance_type        = var.instance_type
+  key_name             = "${aws_key_pair.mc_auto_key_pair.key_name}"
+  security_groups      = ["${aws_security_group.mc_auto_security_group.name}"]
+  iam_instance_profile = "${aws_iam_instance_profile.ec2_s3_access_profile.name}"
 
   root_block_device {
     volume_type = "gp2"
@@ -123,10 +213,17 @@ resource "aws_instance" "mc_auto_instance" {
   # create necessary directories 
   provisioner "remote-exec" {
     inline = [
-      "sudo mkdir -p /app",
-      "sudo setfacl -m u:ec2-user:rwx /app"
+      "sudo mkdir -p /app /minecraft-server",
+      "sudo setfacl -m u:ec2-user:rwx /app /minecraft-server"
     ]
   }
+
+  # copy bucket name to the server
+  provisioner "file" {
+    content     = "MC_AUTO_BUCKET=${var.bucket_name}"
+    destination = "/app/s3_bucket_name.txt"
+  }
+
 
   # copy script files to the server
   provisioner "file" {
@@ -138,6 +235,8 @@ resource "aws_instance" "mc_auto_instance" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /app/autoshutdown.sh",
+      "chmod +x /app/autobackup.sh",
+      "chmod +x /app/autoload.sh",
       "chmod +x /app/setup.sh",
       "chmod +x /app/startup.sh",
       "/app/setup.sh"
