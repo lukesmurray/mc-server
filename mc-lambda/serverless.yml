@@ -20,6 +20,7 @@ provider:
       Resource: "*"
   environment:
     MC_SERVER_INSTANCE_ID: ${file(config.json):instance_id}
+    MC_LAMBDA_PASSWORD: ${file(config.json):lambda_password}
 
 # plugins for flask and python requirements
 plugins:

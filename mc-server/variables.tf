@@ -27,4 +27,8 @@ variable "bucket_name" {
   description = "The name of the s3 bucket to store data in, including world backups"
 }
 
+variable "lambda_password" {
+  description = "The password used to log into the lambda function and control the server."
+}
+
 

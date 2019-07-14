@@ -144,13 +144,19 @@ def do_stop_server():
 def do_the_login():
     """Log the user in.
 
+    Raises:
+        RuntimeError: If the password variable has not been set
+
     Returns:
         Route: Redirects to home page on successful login. Otherwise
             shows login with error message.
 
     """
     # TODO set the password somewhere
-    if request.form['password'] == 'password':
+    password = os.getenv('MC_LAMBDA_PASSWORD')
+    if password is None:
+        raise RuntimeError("do_the_login(): password env var not set")
+    if request.form['password'] == password:
         session['logged_in'] = True
     else:
         flash('wrong password!')
@@ -223,5 +229,5 @@ def logout():
 
 @app.errorhandler(500)
 def internal_error(error):
-    """Template for when an error has occurred"""
+    """Template for when an error has occurred."""
     return render_template('500.html', error=error), 500
