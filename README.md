@@ -9,6 +9,7 @@ To deploy yourself just follow all the instructions below *carefully*.
 ## Aws Setup
 
 1. Create a [**Key Pair**](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair).
+2. Copy the key pair to this folder.
 
 ## Terraform Setup
 
@@ -17,15 +18,19 @@ To deploy yourself just follow all the instructions below *carefully*.
 3. [Install serverless](https://serverless.com/framework/docs/getting-started/)
 4. Run `aws configure`. Follow instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
    1. Set your access keys and region, default output format can be json.
-5. Run `terraform init` to initialize local settings
-6. Import the key pair from aws. `terraform import aws_key_pair.mc_auto_key_pair key` where key is the name of the key you downloaded in aws set up.
+5. Run `terraform init mc-server` to initialize local settings
+6. Import the key pair from aws. `terraform import -config=mc-server aws_key_pair.mc_auto_key_pair key` where key is the name of the key you downloaded in aws set up.
    1. You can see possible key names using `aws ec2 describe-key-pairs | jq '.KeyPairs[].KeyName'`
+
+## Optional Bucket Import
+
+1. Run `terraform import -config=mc-server aws_s3_bucket.mc_auto_bucket your-bucket-name`
 
 ## Server Deploy
 
 1. set the variables in `./mc-server/terraform.tfvars`. Descriptions of these variables can be found in `./mc-server/variables.tf`
 2. Run `./deploy.sh`
-3. Endpoint is printed out or can be found by running `sls info` from within the `mc-lambda` directory.
+3. Endpoint is printed out or can be found by running `./url.sh`.
 
 ## Server Shutdown (Safe Mode Data Preserved)
 This will destroy any compute instances but keep back ups of your world in the bucket specified by bucket name. You may be charged for these. You will see an error, bucket not empty but all other resources will have been destroyed.
@@ -46,7 +51,7 @@ The server automatically performs versioned backups of the [server data director
 Feel free to edit the variables in the [docker-compose file](https://github.com/lukesmurray/mc-server/blob/master/mc-server/mc-server-scripts/docker-compose.yml) to customize your server. Variable definitions can be found in the [itzg/minecraft-server readme](https://github.com/itzg/dockerfiles/tree/master/minecraft-server). Do not change the volumes since the mount point is important for backups. Feel free to change the memory limit if you have a smaller or larger instance.
 
 
-## Useful Terraform Commands 
+## Useful Terraform Commands
 
 `terraform [cmd]`
 

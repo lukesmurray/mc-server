@@ -3,6 +3,8 @@
 
 set -ex
 
+terraform init mc-server
+
 echo "deploying server"
 terraform apply --auto-approve mc-server
 

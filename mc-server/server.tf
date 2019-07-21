@@ -14,7 +14,7 @@ provider "aws" {
   region  = var.region
 }
 
-# create an S3 bucket to store data in 
+# create an S3 bucket to store data in
 resource "aws_s3_bucket" "mc_auto_bucket" {
   bucket = var.bucket_name
 
@@ -78,7 +78,7 @@ resource "aws_security_group" "mc_auto_security_group" {
     to_port     = 25565
     protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "mninecraft udp access"
+    description = "minecraft udp access"
   }
 
   # minecraft udp access
@@ -206,11 +206,12 @@ resource "aws_instance" "mc_auto_instance" {
 
   # specify the ssh connection parameters
   connection {
-    user = "ec2-user"
-    host = "${aws_instance.mc_auto_instance.public_ip}"
+    user        = "ec2-user"
+    host        = "${aws_instance.mc_auto_instance.public_ip}"
+    private_key = "${file("${var.aws_key_name}.pem")}"
   }
 
-  # create necessary directories 
+  # create necessary directories
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p /app /minecraft-server",

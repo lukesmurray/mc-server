@@ -1,6 +1,6 @@
 # Defines overrides for variables which users MUST override.
 
-aws_public_key  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYKlFKDy0BtvgRFUVJkMvSpHVuBCzHKXEeT2PRtyaWdm8geUmBUgn/uji3Dc2QSzug0+QO3RQ3F/3ecP56bpYFxg44B5HfzFB5fghKxF3rX60TSJ06U+Yb7SG7MPaTFyCJX00TngZuKNu3+VfIJo1p2l5XgkSPqxwDCJZqL64LRQWSw1m+2q0HwbtfroMj+B3xC9Kq1x9I67xXc2hfCyWJjiA3ZTxe1mRF2hEaupjmOUMogbHmXLTCrtGFS6YaZ+XIyWTULRE6Xly+NMp7VW32Nzdh3ZUJ6Zx1TeTQCBVX9eutJQkgssW0+bsxtcvrS+mWfZf8CV9PJmUYZULzel1j"
+aws_public_key  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCHYUPMk95AZMaCLjXeTTw48Ti79Gq9dG1gWZCvr7gqXvYxERkAsRfR9hUHN9U+3jtwZKzNdDTLdwOL/Tg1Qfq8fY6YKCSlpC1oh86+QC/S/8zbTYVJkSfVdTuZG/NuIB9ty59SJ8hqLGpnhL+dUGUVnxSgwnzYp+SSqhhqfPo1bGXl/ozSfVfdqPZP0HVDucQ6Wmg4O6mZWt6Pa1oyTUupxx8WL4kf9+Tt42t2hVrvGcXRDPUgUXowMZmDSENNyunKQQpQ5W1mzze/yf+SE08ysUQmUVZohreyNnBsRDca1LAvtUpghWZE+Y1AUCu3s1+H6lEdZJfIDk3nqxkHpcXb"
 aws_key_name    = "mc-auto-keypair-uswest1"
 region          = "us-west-1"
 bucket_name     = "mc-auto-bucket"
