@@ -42,3 +42,7 @@ node_modules
 
 # ignore generated config
 mc-lambda/config.json
+
+mc-server-example
+
+*.pem

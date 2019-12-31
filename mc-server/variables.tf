@@ -22,6 +22,13 @@ variable "aws_public_key" {
 variable "aws_key_name" {
   description = "The name of the key from aws setup. Obtain using > aws ec2 describe-key-pairs | jq '.KeyPairs[].KeyName'"
 }
+variable "aws_sec_group_name" {
+  description = "The name of the security group"
+}
+
+variable "aws_s3_access_name" {
+  description = "The name of the s3 access role"
+}
 
 variable "bucket_name" {
   description = "The name of the s3 bucket to store data in, including world backups"

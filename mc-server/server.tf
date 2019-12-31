@@ -26,21 +26,16 @@ resource "aws_s3_bucket" "mc_auto_bucket" {
     enabled = true
   }
 
+
   lifecycle_rule {
     enabled = true
-
-    noncurrent_version_transition {
+    transition {
       days          = 30
-      storage_class = "STANDARD_IA"
+      storage_class = "STANDARD_IA" # or "ONEZONE_IA"
     }
 
-    noncurrent_version_transition {
-      days          = 60
-      storage_class = "GLACIER"
-    }
-
-    noncurrent_version_expiration {
-      days = 90
+    expiration {
+      days = 31
     }
   }
 
@@ -51,7 +46,7 @@ resource "aws_s3_bucket" "mc_auto_bucket" {
 
 # resource group controls server ports
 resource "aws_security_group" "mc_auto_security_group" {
-  name        = "mc_auto_security_group"
+  name        = var.aws_sec_group_name
   description = "security group for automatic minecraft server"
 
   # allow ssh access
@@ -107,7 +102,7 @@ resource "aws_security_group" "mc_auto_security_group" {
 
 # iam role for ec2 to access s3
 resource "aws_iam_role" "ec2_s3_access_role" {
-  name = "ec2_s3_access_role"
+  name = var.aws_s3_access_name
 
   assume_role_policy = <<EOF
 {
@@ -133,13 +128,13 @@ EOF
 
 # container for iam role so ec2 can access s3
 resource "aws_iam_instance_profile" "ec2_s3_access_profile" {
-  name = "ec2_s3_acess_profile"
+  name = "ec2_s3_acess_profile2"
   role = "${aws_iam_role.ec2_s3_access_role.name}"
 }
 
 resource "aws_iam_role_policy" "ec2_s3_access_policy" {
-  name = "ec2_s3_access_policy"
-  role = "${aws_iam_role.ec2_s3_access_role.id}"
+  name   = "ec2_s3_access_policy2"
+  role   = "${aws_iam_role.ec2_s3_access_role.id}"
   policy = <<EOF
 {
     "Version": "2012-10-17",
