@@ -129,12 +129,12 @@ EOF
 # container for iam role so ec2 can access s3
 resource "aws_iam_instance_profile" "ec2_s3_access_profile" {
   name = "ec2_s3_acess_profile2"
-  role = "${aws_iam_role.ec2_s3_access_role.name}"
+  role = aws_iam_role.ec2_s3_access_role.name
 }
 
 resource "aws_iam_role_policy" "ec2_s3_access_policy" {
   name   = "ec2_s3_access_policy2"
-  role   = "${aws_iam_role.ec2_s3_access_role.id}"
+  role   = aws_iam_role.ec2_s3_access_role.id
   policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -166,7 +166,7 @@ data "aws_ami" "amazon-linux-2" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-2.0.????????-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-2.0.??????????-x86_64-gp2"]
   }
 
   filter {
@@ -179,15 +179,16 @@ data "aws_ami" "amazon-linux-2" {
 
 # create the instance
 resource "aws_instance" "mc_auto_instance" {
-  ami                  = "${data.aws_ami.amazon-linux-2.id}"
+  ami                  = data.aws_ami.amazon-linux-2.id
   instance_type        = var.instance_type
-  key_name             = "${aws_key_pair.mc_auto_key_pair.key_name}"
+  key_name             = aws_key_pair.mc_auto_key_pair.key_name
   security_groups      = ["${aws_security_group.mc_auto_security_group.name}"]
-  iam_instance_profile = "${aws_iam_instance_profile.ec2_s3_access_profile.name}"
+  iam_instance_profile = aws_iam_instance_profile.ec2_s3_access_profile.name
+  ebs_optimized        = true
 
   root_block_device {
     volume_type = "gp2"
-    volume_size = 15 # storage size of the volume in gb
+    volume_size = 8 # storage size of the volume in gb
   }
 
   # t3 are unlimited by default, t2 are standard
@@ -202,8 +203,8 @@ resource "aws_instance" "mc_auto_instance" {
   # specify the ssh connection parameters
   connection {
     user        = "ec2-user"
-    host        = "${aws_instance.mc_auto_instance.public_ip}"
-    private_key = "${file("${var.aws_key_name}.pem")}"
+    host        = aws_instance.mc_auto_instance.public_ip
+    private_key = file("${var.aws_key_name}.pem")
   }
 
   # create necessary directories

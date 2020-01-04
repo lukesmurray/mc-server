@@ -21,7 +21,7 @@ services:
       ANNOUNCE_PLAYER_ACHIEVEMENTS: "true"
       SNOOPER_ENABLED: "false"
       MAX_TICK_TIME: 60000
-      MAX_MEMORY: 1900M
+      MAX_MEMORY: 3750M
       INIT_MEMORY: 1G
       MAX_BUILD_HEIGHT: 256
       ICON: "https://i.imgur.com/n08GKJR.jpg"
