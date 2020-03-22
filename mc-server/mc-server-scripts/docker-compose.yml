@@ -17,16 +17,19 @@ services:
       SPAWN_NPCS: "true"
       LEVEL_TYPE: DEFAULT
       VIEW_DISTANCE: 10
-      MAX_PLAYERS: 3
+      MAX_PLAYERS: 10
       ANNOUNCE_PLAYER_ACHIEVEMENTS: "true"
       SNOOPER_ENABLED: "false"
       MAX_TICK_TIME: 60000
       MAX_MEMORY: 3750M
       INIT_MEMORY: 1G
       MAX_BUILD_HEIGHT: 256
-      HARDCORE: "true"
+      HARDCORE: "false"
       ICON: "https://i.imgur.com/n08GKJR.jpg"
-      EULA: "TRUE"
+      EULA: "true"
+      TYPE: PAPER
+      VERSION: 1.15.2
+    command: --noconsole
     image: itzg/minecraft-server
     container_name: minecraft
     restart: always

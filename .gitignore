@@ -46,3 +46,4 @@ mc-lambda/config.json
 mc-server-example
 
 *.pem
+.mypy_cache
