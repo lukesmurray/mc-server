@@ -16,7 +16,6 @@ variable "project_tag" {
 
 variable "aws_public_key" {
   description = "The public key associated with the private key from aws setup. Obtain using > ssh-keygen -y -f key.pem"
-
 }
 
 variable "aws_key_name" {
@@ -28,6 +27,16 @@ variable "aws_sec_group_name" {
 
 variable "aws_s3_access_name" {
   description = "The name of the s3 access role"
+}
+
+variable "aws_s3_ec2_access_name" {
+  description = "The name of the s3 access ec2 role"
+}
+
+
+variable "aws_s3_ec2_access_policy" {
+  description = "The name of the s3 ec2  access policy"
+
 }
 
 variable "bucket_name" {

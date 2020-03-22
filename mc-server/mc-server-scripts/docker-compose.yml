@@ -24,6 +24,7 @@ services:
       MAX_MEMORY: 3750M
       INIT_MEMORY: 1G
       MAX_BUILD_HEIGHT: 256
+      HARDCORE: "true"
       ICON: "https://i.imgur.com/n08GKJR.jpg"
       EULA: "TRUE"
     image: itzg/minecraft-server

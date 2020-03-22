@@ -20,7 +20,7 @@ resource "aws_s3_bucket" "mc_auto_bucket" {
 
   region = var.region
 
-  force_destroy = false # change to True to destroy all data
+  force_destroy = true # change to True to destroy all data
 
   versioning {
     enabled = true
@@ -128,12 +128,12 @@ EOF
 
 # container for iam role so ec2 can access s3
 resource "aws_iam_instance_profile" "ec2_s3_access_profile" {
-  name = "ec2_s3_acess_profile2"
+  name = var.aws_s3_ec2_access_name
   role = aws_iam_role.ec2_s3_access_role.name
 }
 
 resource "aws_iam_role_policy" "ec2_s3_access_policy" {
-  name   = "ec2_s3_access_policy2"
+  name   = var.aws_s3_ec2_access_policy
   role   = aws_iam_role.ec2_s3_access_role.id
   policy = <<EOF
 {
